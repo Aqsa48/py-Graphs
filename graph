@@ -1,0 +1,84 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Provided data
+data = {
+    'Research articles': [45, 43, 62, 76, 459],
+    'Review articles': [338, 388, 402, 416, 80],
+    'Encyclopedia': [18, 5, 13, 34, 13],
+    'Book chapters': [102, 82, 89, 110, 100],
+    'Conference abstracts': [21, 7, 6, 3, 2],
+    'Data articles': [1, 1, 2, 0, 0],
+}
+
+years = [2019, 2020, 2021, 2022, 2023]
+
+# Create a directed graph
+G = nx.DiGraph()
+
+# Add nodes for platforms and years
+for platform in data.keys():
+    G.add_node(platform)
+for year in years:
+    G.add_node(year)
+
+# Add edges based on the provided data
+for platform, counts in data.items():
+    for i, count in enumerate(counts):
+        G.add_edge(platform, years[i], weight=count)
+
+# Draw the network graph
+plt.figure(figsize=(10, 8))
+pos = nx.spring_layout(G, seed=42)
+nx.draw(G, pos, with_labels=True, node_size=800, node_color='skyblue', font_weight='bold', font_size=10)
+plt.title("Network Graph of Press Mud Data Across Platforms and Years")
+plt.show()
+
+
+
+
+##2 import networkx as nx
+import matplotlib.pyplot as plt
+
+# Provided data
+data = {
+    'Research articles': [45, 43, 62, 76, 459],
+    'Review articles': [338, 388, 402, 416, 80],
+    'Encyclopedia': [18, 5, 13, 34, 13],
+    'Book chapters': [102, 82, 89, 110, 100],
+    'Conference abstracts': [21, 7, 6, 3, 2],
+    'Data articles': [1, 1, 2, 0, 0],
+}
+
+years = [2019, 2020, 2021, 2022, 2023]
+
+# Create a directed graph
+G = nx.DiGraph()
+
+# Add nodes for platforms and years
+for platform in data.keys():
+    G.add_node(platform, node_type='platform')
+for year in years:
+    G.add_node(year, node_type='year')
+
+# Add edges based on the provided data
+for platform, counts in data.items():
+    for i, count in enumerate(counts):
+        G.add_edge(platform, years[i], weight=count)
+
+# Create color mappings for different node types
+node_colors = {'platform': 'skyblue', 'year': 'salmon'}
+
+# Get node types
+node_types = nx.get_node_attributes(G, 'node_type')
+
+# Assign colors to nodes based on node types
+node_colors = [node_colors[node_types[node]] for node in G.nodes()]
+
+# Draw the network graph
+plt.figure(figsize=(12, 8))
+pos = nx.spring_layout(G, seed=42)
+nx.draw(G, pos, with_labels=True, node_size=800, node_color=node_colors, font_weight='bold', font_size=10)
+plt.title("Relationship between Press Mud Research Paper Types and Publication Years")
+plt.savefig('graph_image.png', format='png')
+plt.show()
